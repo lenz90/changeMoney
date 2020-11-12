@@ -1,6 +1,7 @@
 package com.lenz.bcp.changeMoney.infrastructure.controller;
 
 import com.lenz.bcp.changeMoney.application.ChangeMoneyService;
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.swagger.annotations.*;
 import lombok.Getter;
@@ -31,7 +32,14 @@ public class ChangeMoneyController {
                 .map(x->new ResponseChange(x.originMoney(),x.destinationMoney(),x.amount(),x.amountChanged(),x.changeType()));
     }
 
-    @PostMapping(value = "/save-type", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/types", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Obtiene todos los tipos de cambio con respecto a 1 dolar",
+            response = RequestChangeType[].class)
+    public Observable<RequestChangeType> getChangeTypes() {
+        return changeMoneyService.getChangeTypes().map(x->new RequestChangeType(x.money(), x.changeType()));
+    }
+
+    @PostMapping(value = "/types", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "Guarda un tipo de cambio",
             response = ResponseChange.class)
     public void getChangeMoney(@ApiParam @RequestBody RequestChangeType requestChangeType) throws Exception {
@@ -72,6 +80,13 @@ final class RequestChangeType {
     @NotEmpty
     private Double changeType;
 
+    public RequestChangeType(@NotEmpty String money, @NotEmpty Double changeType) {
+        this.money = money;
+        this.changeType = changeType;
+    }
+
+    public RequestChangeType() {
+    }
 }
 
 

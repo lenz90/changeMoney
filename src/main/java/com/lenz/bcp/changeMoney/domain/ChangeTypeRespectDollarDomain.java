@@ -1,5 +1,8 @@
 package com.lenz.bcp.changeMoney.domain;
 
+import lombok.ToString;
+
+@ToString
 public class ChangeTypeRespectDollarDomain {
     private String moneyType;
     private Double changeType;

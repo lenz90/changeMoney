@@ -1,11 +1,14 @@
 package com.lenz.bcp.changeMoney.infrastructure.repository.h2;
 
+import lombok.ToString;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.UUID;
 
+@ToString
 @Entity
 @Table(name = "change_type_dollar")
 public class ChangeTypeEntity {
@@ -24,7 +27,17 @@ public class ChangeTypeEntity {
         this.changeType = changeType;
     }
 
+    public ChangeTypeEntity(String id, String money, Double changeType) {
+        this.id = id;
+        this.money = money;
+        this.changeType = changeType;
+    }
+
     public ChangeTypeEntity() {
+    }
+
+    public String id() {
+        return id;
     }
 
     public String money() {

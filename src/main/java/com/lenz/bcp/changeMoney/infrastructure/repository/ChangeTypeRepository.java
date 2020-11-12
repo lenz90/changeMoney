@@ -26,4 +26,19 @@ public class ChangeTypeRepository implements ChangeTypeDomainRepository {
     public void saveChangeType(String money, Double changeType) {
         repository.save(new ChangeTypeEntity(money, changeType));
     }
+
+    @Override
+    public Observable<ChangeTypeRespectDollarDomain> getChangeTypes() {
+        return Observable.fromIterable(repository.findAll())
+                .map(x->new ChangeTypeRespectDollarDomain(x.money(), x.changeType()));
+    }
+
+    @Override
+    public void updateChangeType(String money, Double changeType) {
+        Observable.fromIterable(repository.findAll())
+                .filter(x->x.money().equalsIgnoreCase(money.trim()))
+                .map(x->new ChangeTypeEntity(x.id(), x.money(), changeType))
+                .doOnNext(x-> System.out.println(x.toString()))
+                .map(x->repository.save(x)).subscribe();
+    }
 }
